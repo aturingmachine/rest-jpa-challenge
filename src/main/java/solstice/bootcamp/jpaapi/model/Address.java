@@ -1,5 +1,6 @@
 package solstice.bootcamp.jpaapi.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,5 +23,8 @@ public class Address {
   private String zip;
   private String country;
   @ManyToOne
+  @JoinColumn(name = "account_id")
+  @JsonBackReference
   private Account account;
+
 }
