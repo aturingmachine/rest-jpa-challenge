@@ -6,4 +6,6 @@ import solstice.bootcamp.jpaapi.model.Order;
 
 @Repository
 public interface OrderRepository extends CrudRepository<Order, Long> {
+
+  Iterable<Order> findByAccountIdAndShippingAddressId(Long accountId, Long addressId);
 }

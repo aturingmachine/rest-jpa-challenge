@@ -29,4 +29,10 @@ public class Order {
   @OneToMany
   @JoinColumn(name = "line_item_id")
   private Set<OrderLineItem> lineItems;
+
+  public void generateTotal() {
+    if (this.lineItems != null) {
+      this.lineItems.forEach(item -> this.total += item.getPrice() * item.getQuantity());
+    }
+  }
 }

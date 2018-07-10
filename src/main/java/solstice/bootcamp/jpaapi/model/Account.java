@@ -22,7 +22,7 @@ public class Account {
   private String emailAddress;
   @OneToMany
   @JoinColumn(name = "account_id")
-  @JsonManagedReference
+//  @JsonManagedReference
   private Set<Address> addresses;
 
   public Account(String firstName, String lastName, String emailAddress) {
@@ -30,28 +30,4 @@ public class Account {
     this.lastName = lastName;
     this.emailAddress = emailAddress;
   }
-//
-//  public String getFirstName() {
-//    return firstName;
-//  }
-//
-//  public void setFirstName(String firstName) {
-//    this.firstName = firstName;
-//  }
-//
-//  public String getLastName() {
-//    return lastName;
-//  }
-//
-//  public void setLastName(String lastName) {
-//    this.lastName = lastName;
-//  }
-//
-//  public String getEmailAddress() {
-//    return emailAddress;
-//  }
-//
-//  public void setEmailAddress(String emailAddress) {
-//    this.emailAddress = emailAddress;
-//  }
 }

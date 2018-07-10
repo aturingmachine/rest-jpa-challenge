@@ -6,4 +6,6 @@ import solstice.bootcamp.jpaapi.model.Shipment;
 
 @Repository
 public interface ShipmentRepository extends CrudRepository<Shipment, Long> {
+
+  Iterable<Shipment> getAllByAccountIdAndShippingAddressId(Long accountId, Long addressId);
 }

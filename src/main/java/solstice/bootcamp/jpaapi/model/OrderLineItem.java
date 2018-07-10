@@ -25,4 +25,8 @@ public class OrderLineItem {
   @JoinColumn(name = "shipment_id")
   private Shipment shipment;
 
+
+  public void genTotalPrice() {
+    this.totalPrice = this.price * this.quantity;
+  }
 }

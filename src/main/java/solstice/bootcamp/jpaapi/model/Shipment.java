@@ -1,5 +1,6 @@
 package solstice.bootcamp.jpaapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,9 +21,11 @@ public class Shipment {
   private String deliveredDate;
   @ManyToOne
   @JoinColumn(name = "account_id")
+  @JsonIgnoreProperties({"addresses"})
   private Account account;
   @ManyToOne
   @JoinColumn(name = "address_id")
+  @JsonIgnoreProperties({"account"})
   private Address shippingAddress;
   @OneToMany
   @JoinColumn(name = "order_line_item_id")

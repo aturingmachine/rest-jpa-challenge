@@ -40,7 +40,7 @@ public class AddressController {
   }
 
   @DeleteMapping("/{addressId}")
-  public ResponseEntity delete(@PathVariable("addresId") Long id) {
+  public ResponseEntity delete(@PathVariable("addressId") Long id) {
     addressService.delete(id);
 
     return new ResponseEntity(HttpStatus.NO_CONTENT);

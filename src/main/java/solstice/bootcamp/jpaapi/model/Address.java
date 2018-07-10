@@ -1,6 +1,7 @@
 package solstice.bootcamp.jpaapi.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,7 +25,8 @@ public class Address {
   private String country;
   @ManyToOne
   @JoinColumn(name = "account_id")
-  @JsonBackReference
+//  @JsonBackReference
+  @JsonIgnoreProperties({"addresses", "firstName", "lastName", "emailAddress", "hibernateLazyInitializer", "handler"})
   private Account account;
 
 }
