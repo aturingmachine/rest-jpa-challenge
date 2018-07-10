@@ -8,4 +8,8 @@ import solstice.bootcamp.jpaapi.model.Order;
 public interface OrderRepository extends CrudRepository<Order, Long> {
 
   Iterable<Order> findByAccountIdAndShippingAddressId(Long accountId, Long addressId);
+
+  Iterable<Order> findByAccountIdOrderByOrderDateAsc(Long accountId);
+
+  Order findByOrderNumber(String orderNumber);
 }

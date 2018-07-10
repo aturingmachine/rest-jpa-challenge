@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import solstice.bootcamp.jpaapi.model.OrderLineItem;
 import solstice.bootcamp.jpaapi.service.LineItemService;
 
-@RequestMapping("/shipments/{shipmentId}/lineItems")
+@RequestMapping("/shipments/{shipmentId}/orders/{orderId}/lineItems")
 @RestController
 public class LineItemController {
 
@@ -17,8 +17,9 @@ public class LineItemController {
   }
 
   @GetMapping("")
-  public Iterable<OrderLineItem> getAll(@PathVariable("shipmentId") Long shipmentId) {
-    return lineItemService.getAll(shipmentId);
+  public Iterable<OrderLineItem> getAll(@PathVariable("shipmentId") Long shipmentId,
+      @PathVariable("orderId") Long orderId) {
+    return lineItemService.getAll(shipmentId, orderId);
   }
 
   @GetMapping("/{itemId}")
@@ -28,10 +29,10 @@ public class LineItemController {
 
   @PostMapping("/products/{productId}")
   public ResponseEntity create(
-      @PathVariable("shipmentId") Long shipmentId, @PathVariable("productId") Long productId,
-      @RequestBody OrderLineItem item) {
+      @PathVariable("shipmentId") Long shipmentId, @PathVariable("orderId") Long orderId,
+      @PathVariable("productId") Long productId, @RequestBody OrderLineItem item) {
 
-    OrderLineItem newItem = lineItemService.create(shipmentId, productId, item);
+    OrderLineItem newItem = lineItemService.create(shipmentId, productId, orderId, item);
 
     return new ResponseEntity<>(newItem, HttpStatus.CREATED);
   }
@@ -39,10 +40,10 @@ public class LineItemController {
   @PutMapping("/{itemId}/products/{productId}")
   public OrderLineItem update(
       @PathVariable("shipmentId") Long shipmentId, @PathVariable("itemId") Long itemId,
-      @PathVariable("productId") Long productId,
+      @PathVariable("productId") Long productId, @PathVariable("orderId") Long orderId,
       @RequestBody OrderLineItem item) {
 
-    return lineItemService.update(shipmentId, itemId, productId, item);
+    return lineItemService.update(shipmentId, itemId, productId, orderId, item);
   }
 
   @DeleteMapping("/{itemId}")

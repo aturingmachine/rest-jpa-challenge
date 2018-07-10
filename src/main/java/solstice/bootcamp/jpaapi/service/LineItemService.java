@@ -1,14 +1,13 @@
 package solstice.bootcamp.jpaapi.service;
 
 import org.springframework.stereotype.Service;
-import solstice.bootcamp.jpaapi.model.Account;
+import solstice.bootcamp.jpaapi.model.Order;
 import solstice.bootcamp.jpaapi.model.OrderLineItem;
 import solstice.bootcamp.jpaapi.model.Product;
 import solstice.bootcamp.jpaapi.model.Shipment;
-import solstice.bootcamp.jpaapi.repository.AccountRepository;
-import solstice.bootcamp.jpaapi.repository.OrderLineItemRepository;
-import solstice.bootcamp.jpaapi.repository.ProductRepository;
-import solstice.bootcamp.jpaapi.repository.ShipmentRepository;
+import solstice.bootcamp.jpaapi.repository.*;
+
+import java.util.Optional;
 
 @Service
 public class LineItemService {
@@ -16,28 +15,36 @@ public class LineItemService {
   private OrderLineItemRepository orderLineItemRepository;
   private ShipmentRepository shipmentRepository;
   private ProductRepository productRepository;
+  private OrderRepository orderRepository;
 
   public LineItemService(OrderLineItemRepository orderLineItemRepository,
-      ShipmentRepository shipmentRepository, ProductRepository productRepository) {
+      ShipmentRepository shipmentRepository, ProductRepository productRepository, OrderRepository orderRepository) {
 
     this.orderLineItemRepository = orderLineItemRepository;
     this.shipmentRepository = shipmentRepository;
     this.productRepository = productRepository;
+    this.orderRepository = orderRepository;
   }
 
-  public Iterable<OrderLineItem> getAll(Long shipmentId) {
-    return orderLineItemRepository.getAllByShipmentId(shipmentId);
+  public Iterable<OrderLineItem> getAll(Long shipmentId, Long orderId) {
+    return orderLineItemRepository.getAllByShipmentIdOrOrderId(shipmentId, orderId);
   }
 
   public OrderLineItem getOne(Long itemId) {
-    return orderLineItemRepository.findById(itemId).get();
+    if (orderLineItemRepository.findById(itemId).isPresent()) {
+      return orderLineItemRepository.findById(itemId).get();
+    } else {
+      return null;
+    }
   }
 
-  public OrderLineItem create(Long shipmentId, Long productId, OrderLineItem item) {
-    Shipment shipment = shipmentRepository.findById(shipmentId).get();
+  public OrderLineItem create(Long shipmentId, Long productId, Long orderId, OrderLineItem item) {
+    Optional<Shipment> shipment = shipmentRepository.findById(shipmentId);
+    Optional<Order> order = orderRepository.findById(orderId);
     Product product = productRepository.findById(productId).get();
 
-    item.setShipment(shipment);
+    item.setShipment(shipment.orElse(null));
+    item.setOrder(order.orElse(null));
     item.setProduct(product);
     item.setPrice(product.getPrice());
     item.genTotalPrice();
@@ -45,7 +52,7 @@ public class LineItemService {
     return orderLineItemRepository.save(item);
   }
 
-  public OrderLineItem update(Long shipmentId, Long itemId, Long productId, OrderLineItem item) {
+  public OrderLineItem update(Long shipmentId, Long itemId, Long productId, Long orderId, OrderLineItem item) {
     Shipment shipment = shipmentRepository.findById(shipmentId).get();
     Product product = productRepository.findById(productId).get();
     OrderLineItem itemToUpdate = orderLineItemRepository.findById(itemId).get();

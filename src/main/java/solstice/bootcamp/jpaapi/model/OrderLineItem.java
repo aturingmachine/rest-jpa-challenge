@@ -1,5 +1,6 @@
 package solstice.bootcamp.jpaapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,7 +24,20 @@ public class OrderLineItem {
   private Product product;
   @ManyToOne
   @JoinColumn(name = "shipment_id")
+  @JsonIgnoreProperties({"account", "shippingAddress", "orderLineItems"})
   private Shipment shipment;
+  @ManyToOne
+  @JoinColumn(name = "order_id")
+  @JsonIgnoreProperties({"lineItems", "shippingAddress", "account"})
+  private Order order;
+
+  public double getPrice() {
+    return this.product.getPrice();
+  }
+
+  public double getTotalPrice() {
+    return this.product.getPrice() * this.getQuantity();
+  }
 
 
   public void genTotalPrice() {

@@ -28,6 +28,7 @@ public class Shipment {
   @JsonIgnoreProperties({"account"})
   private Address shippingAddress;
   @OneToMany
-  @JoinColumn(name = "order_line_item_id")
+  @JoinColumn(name = "shipment_id")
+  @JsonIgnoreProperties({"shipment", "order"})
   private Set<OrderLineItem> orderLineItems;
 }

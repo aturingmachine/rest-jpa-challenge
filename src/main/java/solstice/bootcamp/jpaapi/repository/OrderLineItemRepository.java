@@ -7,5 +7,5 @@ import solstice.bootcamp.jpaapi.model.OrderLineItem;
 @Repository
 public interface OrderLineItemRepository extends CrudRepository<OrderLineItem, Long> {
 
-  Iterable<OrderLineItem> getAllByShipmentId(Long shipmentId);
+  Iterable<OrderLineItem> getAllByShipmentIdOrOrderId(Long shipmentId, Long orderId);
 }

@@ -1,5 +1,6 @@
 package solstice.bootcamp.jpaapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,6 +18,7 @@ public class Order {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private long id;
+  @Column(unique = true)
   private String orderNumber;
   private String orderDate;
   private double total;
@@ -27,7 +29,8 @@ public class Order {
   @JoinColumn(name = "address_id")
   private Address shippingAddress;
   @OneToMany
-  @JoinColumn(name = "line_item_id")
+  @JoinColumn(name = "order_id")
+  @JsonIgnoreProperties({"order", "shipment"})
   private Set<OrderLineItem> lineItems;
 
   public void generateTotal() {

@@ -1,0 +1,1262 @@
+{
+	"info": {
+		"_postman_id": "70b37c87-784a-4b0c-857d-24300b048c4d",
+		"name": "REST JPA Challenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create Account",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b6beab91-37dd-4c00-8b8e-2441ece5be84",
+						"type": "text/javascript",
+						"exec": [
+							"//Sets the Account ID for testing purposes",
+							"var jsonData = JSON.parse(responseBody);",
+							"pm.environment.set(\"account_id\", jsonData.id);",
+							"",
+							"pm.test(\"201 Status\", function() {",
+							"    pm.response.to.have.status(201)",
+							"})"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"firstName\": \"Post\",\n\t\"lastName\": \"Test\",\n\t\"emailAddress\": \"Post@test.com\"\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/accounts",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Address",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "808bc828-d4f0-48e4-9243-6bd94dd7fba4",
+						"type": "text/javascript",
+						"exec": [
+							"var json = JSON.parse(responseBody)",
+							"pm.environment.set(\"address_id\", json.id)",
+							"",
+							"pm.test(\"201 Status\", function() {",
+							"    pm.response.to.have.status(201)",
+							"})"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"street\": \"test lane\",\n\t\"building\": \"123\",\n\t\"city\": \"TestTown\",\n\t\"state\": \"TEST\",\n\t\"zip\": \"12345\",\n\t\"country\": \"Testistan\"\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/accounts/{{account_id}}/addresses",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"accounts",
+						"{{account_id}}",
+						"addresses"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "9d3a1fb6-7783-4354-bf75-14bd7aa36d7d",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody)",
+							"postman.setEnvironmentVariable(\"product_id\", jsonData.id)",
+							"pm.environment.set(\"product1_price\", jsonData.price)",
+							"",
+							"pm.test(\"Has 201 Status\", function() {",
+							"    pm.response.to.have.status(201)",
+							"})",
+							"",
+							"pm.test(\"Has Proper Data\", function() {",
+							"    var json = JSON.parse(responseBody)",
+							"    pm.expect(json.name).to.eql(\"Test Product\")",
+							"    pm.expect(json.description).to.eql(\"Only For Testing\")",
+							"    pm.expect(json.image).to.eql(\"SomeUrl\")",
+							"    pm.expect(json.price).to.eql(30)",
+							"})",
+							"",
+							"var jsonData = JSON.parse(responseBody)",
+							"postman.setEnvironmentVariable(\"product_id\", jsonData.id)"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Test Product\",\n\t\"description\": \"Only For Testing\",\n\t\"image\": \"SomeUrl\",\n\t\"price\": 30.00\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/products",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Product 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "55ae43bb-f7c4-44c1-9243-66a79d0babbc",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody)",
+							"postman.setEnvironmentVariable(\"product_id_2\", jsonData.id)",
+							"pm.environment.set(\"product2_price\", jsonData.price)",
+							"",
+							"pm.test(\"Has 201 Status\", function() {",
+							"    pm.response.to.have.status(201)",
+							"})",
+							"",
+							"pm.test(\"Has Proper Data\", function() {",
+							"    var json = JSON.parse(responseBody)",
+							"    pm.expect(json.name).to.eql(\"Second Product\")",
+							"    pm.expect(json.description).to.eql(\"Only For Testing Line Item PUT\")",
+							"    pm.expect(json.image).to.eql(\"SomeOtherURL\")",
+							"    pm.expect(json.price).to.eql(27.00)",
+							"})",
+							"",
+							"var jsonData = JSON.parse(responseBody)"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Second Product\",\n\t\"description\": \"Only For Testing Line Item PUT\",\n\t\"image\": \"SomeOtherURL\",\n\t\"price\": 27.00\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/products",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Shipment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "43cc71c3-45f9-4289-9dd4-92f516d070a9",
+						"type": "text/javascript",
+						"exec": [
+							"var json = pm.response.json()",
+							"pm.environment.set(\"shipment_id\", json.id)",
+							"",
+							"pm.test(\"Created Status\", function() {",
+							"    pm.response.to.have.status(201)",
+							"})",
+							"",
+							"pm.test(\"Proper Data\", function() {",
+							"    var json = pm.response.json()",
+							"    pm.expect(json.shippedDate).to.eql(\"2018-07-09\")",
+							"    pm.expect(json.deliveredDate).to.eql(\"2018-07-10\")",
+							"})"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"shippedDate\": \"2018-07-09\",\n\t\"deliveredDate\": \"2018-07-10\"\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/accounts/{{account_id}}/addresses/{{address_id}}/shipments",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"accounts",
+						"{{account_id}}",
+						"addresses",
+						"{{address_id}}",
+						"shipments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Shipment Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d7e52de3-eced-40d6-8c94-0cc8fb9b11f1",
+						"type": "text/javascript",
+						"exec": [
+							"var json = pm.response.json()",
+							"pm.environment.set(\"shipment_id_2\", json.id)",
+							"",
+							"pm.test(\"Created Status\", function() {",
+							"    pm.response.to.have.status(201)",
+							"})",
+							"",
+							"pm.test(\"Proper Data\", function() {",
+							"    var json = pm.response.json()",
+							"    pm.expect(json.shippedDate).to.eql(\"2018-07-07\")",
+							"    pm.expect(json.deliveredDate).to.eql(\"2018-07-08\")",
+							"})"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"shippedDate\": \"2018-07-07\",\n\t\"deliveredDate\": \"2018-07-08\"\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/accounts/{{account_id}}/addresses/{{address_id}}/shipments",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"accounts",
+						"{{account_id}}",
+						"addresses",
+						"{{address_id}}",
+						"shipments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6ba18bb6-17d2-4597-b5c1-cc2441d3ceee",
+						"type": "text/javascript",
+						"exec": [
+							"var json = pm.response.json()",
+							"pm.environment.set(\"order_id\", json.id)",
+							"pm.environment.set(\"order_number\", json.orderNumber)",
+							"",
+							"pm.test('201 status', () => {",
+							"    pm.response.to.have.status(201)",
+							"})",
+							"",
+							"pm.test('Check Values', () => {",
+							"    var json = pm.response.json()",
+							"    pm.expect(json.orderNumber).to.eql(\"12345\")",
+							"    pm.expect(json.orderDate).to.eql(\"2018-07-10\")",
+							"    pm.expect(json.account.id).to.eql(parseInt(pm.environment.get(\"account_id\")))",
+							"})"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"orderNumber\": \"12345\",\n\t\"orderDate\": \"2018-07-10\"\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/accounts/{{account_id}}/addresses/{{address_id}}/orders",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"accounts",
+						"{{account_id}}",
+						"addresses",
+						"{{address_id}}",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Line Item",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "03ede637-ad17-45f2-a614-ea11a7ff66af",
+						"type": "text/javascript",
+						"exec": [
+							"var json = pm.response.json()",
+							"pm.environment.set(\"line_id\", json.id)",
+							"",
+							"pm.test(\"Check Status\", () => {",
+							"    pm.response.to.have.status(201)",
+							"})",
+							"",
+							"pm.test(\"Check Values\", () => {",
+							"    var json = pm.response.json()",
+							"    pm.expect(json.quantity).to.eql(3)",
+							"    pm.expect(json.price).to.eql(parseFloat(pm.environment.get(\"product1_price\")))",
+							"})"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"quantity\": 3\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/shipments/{{shipment_id}}/orders/{{order_id}}/lineItems/products/{{product_id}}",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"shipments",
+						"{{shipment_id}}",
+						"orders",
+						"{{order_id}}",
+						"lineItems",
+						"products",
+						"{{product_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Line Item Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7f988e55-dfe2-421a-b32d-a1bfe0686537",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Check Status\", () => {",
+							"    pm.response.to.have.status(201)",
+							"})",
+							"",
+							"pm.test(\"Check Values\", () => {",
+							"    var json = pm.response.json()",
+							"    pm.expect(json.quantity).to.eql(12)",
+							"    pm.expect(json.price).to.eql(parseFloat(pm.environment.get(\"product1_price\")))",
+							"})"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"quantity\": 12\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/shipments/{{shipment_id_2}}/orders/{{order_id}}/lineItems/products/{{product_id}}",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"shipments",
+						"{{shipment_id_2}}",
+						"orders",
+						"{{order_id}}",
+						"lineItems",
+						"products",
+						"{{product_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Accounts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "255867dd-205b-4aa2-8b94-d351cdd21fbc",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Response Is Successful\", function() {",
+							"    pm.response.to.have.status(200)",
+							"})"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "localhost:8080/accounts",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Account",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "648062c8-c19f-4abd-861d-46f7e0ed4508",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"200 Status\", function() {",
+							"    pm.response.to.have.status(200)",
+							"})"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"firstName\": \"Put\",\n    \"lastName\": \"Test\",\n    \"emailAddress\": \"Put@test.com\"\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/accounts/{{account_id}}",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"accounts",
+						"{{account_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Addresses For Account",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b0229772-c996-407b-b61d-2d1ce9dc12a2",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"200 Status\", function() {",
+							"    pm.response.to.have.status(200)",
+							"})"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "localhost:8080/accounts/{{account_id}}/addresses",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"accounts",
+						"{{account_id}}",
+						"addresses"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get One Address",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "2e8810d6-5358-441b-b54c-4ab983129993",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"200 Status\", function() {",
+							"    pm.response.to.have.status(200)",
+							"})"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "localhost:8080/accounts/{{account_id}}/addresses/{{address_id}}",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"accounts",
+						"{{account_id}}",
+						"addresses",
+						"{{address_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Address",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d8972728-8254-4d25-ad89-641965078fda",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"200 Status\", function() {",
+							"    pm.response.to.have.status(200)",
+							"})",
+							"",
+							"pm.test(\"Check ID\", () => {",
+							"    var json = pm.response.json()",
+							"    pm.expect(json.id).to.eql(parseInt(pm.environment.get(\"address_id\")))",
+							"})",
+							"",
+							"var json = JSON.parse(responseBody)",
+							"postman.setEnvironmentVariable(\"address_id\", json.id)"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"street\": \"update lane\",\n\t\"building\": \"456\",\n\t\"city\": \"UpdateTown\",\n\t\"state\": \"Update\",\n\t\"zip\": \"12345\",\n\t\"country\": \"Updateistan\"\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/accounts/{{account_id}}/addresses/{{address_id}}",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"accounts",
+						"{{account_id}}",
+						"addresses",
+						"{{address_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get One Product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "83fe193e-442b-4258-ac23-a8bf8cca5b68",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Request Successful\", function() {",
+							"    pm.response.to.have.status(200)",
+							"})",
+							"",
+							"pm.test(\"Expected Data Returned\", function() {",
+							"    var json = pm.response.json()",
+							"    pm.expect(json.id).to.eql(parseInt(pm.environment.get(\"product_id\")))",
+							"})"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "localhost:8080/products/{{product_id}}",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"products",
+						"{{product_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Products",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0eb75470-7958-4e2b-bbaa-44223dd20aa2",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Response is OK\", function() {",
+							"    pm.response.to.have.status(200)",
+							"})"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "localhost:8080/products",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8f8b2666-c08e-4c75-a59c-354ab61a8127",
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody)",
+							"postman.setEnvironmentVariable(\"product_id\", jsonData.id)",
+							"pm.environment.set(\"product1_price\", jsonData.price)",
+							"",
+							"pm.test(\"Has 200 Status\", function() {",
+							"    pm.response.to.have.status(200)",
+							"})",
+							"",
+							"pm.test(\"Has Proper Data\", function() {",
+							"    var json = JSON.parse(responseBody)",
+							"    pm.expect(json.name).to.eql(\"Updated Product\")",
+							"    pm.expect(json.description).to.eql(\"Only For Updating\")",
+							"    pm.expect(json.image).to.eql(\"SomeUpdatedUrl\")",
+							"    pm.expect(json.price).to.eql(50.45)",
+							"})"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Updated Product\",\n\t\"description\": \"Only For Updating\",\n\t\"image\": \"SomeUpdatedUrl\",\n\t\"price\": 50.45\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/products/{{product_id}}",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"products",
+						"{{product_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Shipments",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "83f17731-a231-4f8c-b4b1-f539622877fd",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"OK Status\", function() {",
+							"    pm.response.to.have.status(200)",
+							"})",
+							"",
+							"pm.test(\"Proper Data\", function() {",
+							"    var json = pm.response.json()",
+							"    pm.expect(json[0].shippedDate).to.eql(\"2018-07-09\")",
+							"    pm.expect(json[0].deliveredDate).to.eql(\"2018-07-10\")",
+							"})"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "localhost:8080/accounts/{{account_id}}/addresses/{{address_id}}/shipments",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"accounts",
+						"{{account_id}}",
+						"addresses",
+						"{{address_id}}",
+						"shipments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get One Shipment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6aeca668-b035-4efd-8003-42c9a8cd700d",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"OK Status\", function() {",
+							"    pm.response.to.have.status(200)",
+							"})",
+							"",
+							"pm.test(\"Proper Data\", function() {",
+							"    var json = pm.response.json()",
+							"    pm.expect(json.shippedDate).to.eql(\"2018-07-09\")",
+							"    pm.expect(json.deliveredDate).to.eql(\"2018-07-10\")",
+							"})"
+						]
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "aa32f358-6cef-4564-b46c-7a56f325b9e1",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "localhost:8080/accounts/{{account_id}}/addresses/{{address_id}}/shipments/{{shipment_id}}",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"accounts",
+						"{{account_id}}",
+						"addresses",
+						"{{address_id}}",
+						"shipments",
+						"{{shipment_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Shipment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "76e638ec-4fc4-42e4-bdef-9ab222eeac45",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Check ID is unchanged\", () => {",
+							"    var json = pm.response.json()",
+							"    pm.expect(json.id).to.eql(parseInt(pm.environment.get(\"shipment_id\")))",
+							"})",
+							"",
+							"pm.test(\"Check Response Status\", () => {",
+							"    var json = pm.response.json()",
+							"    pm.expect(json.shippedDate).to.eql(\"2018-07-11\")",
+							"    pm.expect(json.deliveredDate).to.eql(\"2018-07-12\")",
+							"})"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"shippedDate\": \"2018-07-11\",\n\t\"deliveredDate\": \"2018-07-12\"\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/accounts/{{account_id}}/addresses/{{address_id}}/shipments/{{shipment_id}}",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"accounts",
+						"{{account_id}}",
+						"addresses",
+						"{{address_id}}",
+						"shipments",
+						"{{shipment_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f9004490-5428-4c37-af2f-67e8da867877",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"OK\", () => {",
+							"    pm.response.to.have.status(200)",
+							"})",
+							"",
+							"pm.test(\"Check Values\", () => {",
+							"    var json = pm.response.json()",
+							"    pm.expect(json[0].id).to.eql(parseInt(pm.environment.get(\"order_id\")))",
+							"})"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "localhost:8080/accounts/{{account_id}}/addresses/{{address_id}}/orders",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"accounts",
+						"{{account_id}}",
+						"addresses",
+						"{{address_id}}",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Line Items",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "db0a8bda-4e6e-493a-84d9-91a4340b9e02",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Check Status\", () => {",
+							"    pm.response.to.have.status(200)",
+							"})"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "localhost:8080/shipments/{{shipment_id}}/orders/{{order_id}}/lineItems",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"shipments",
+						"{{shipment_id}}",
+						"orders",
+						"{{order_id}}",
+						"lineItems"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get One Line Item",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "47442c5c-fc9c-457e-806a-46deef76e1c9",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Check Status\", () => {",
+							"    pm.response.to.have.status(200)",
+							"})",
+							"",
+							"pm.test(\"Check Values\", () => {",
+							"    var json = pm.response.json()",
+							"    pm.expect(json.quantity).to.eql(3)",
+							"    pm.expect(json.price).to.eql(parseFloat(pm.environment.get(\"product1_price\")))",
+							"})"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "localhost:8080/shipments/{{shipment_id}}/orders/{{order_id}}/lineItems/{{line_id}}",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"shipments",
+						"{{shipment_id}}",
+						"orders",
+						"{{order_id}}",
+						"lineItems",
+						"{{line_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Line Item",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f0db565e-7dd3-4326-a5b5-680892fb99de",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Check Status\", () => {",
+							"    pm.response.to.have.status(200)",
+							"})",
+							"",
+							"pm.test(\"Check Values\", () => {",
+							"    var json = pm.response.json()",
+							"    pm.expect(json.quantity).to.eql(10)",
+							"    pm.expect(json.price).to.eql(parseFloat(pm.environment.get(\"product2_price\")))",
+							"})"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"quantity\": 10\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/shipments/{{shipment_id}}/orders/{{order_id}}/lineItems/{{line_id}}/products/{{product_id_2}}",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"shipments",
+						"{{shipment_id}}",
+						"orders",
+						"{{order_id}}",
+						"lineItems",
+						"{{line_id}}",
+						"products",
+						"{{product_id_2}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Account Orders",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e08585ad-e04c-4ced-86d9-6733382aa2e1",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Check Status\", () => {",
+							"    pm.response.to.have.status(200)",
+							"})",
+							"",
+							"pm.test(\"Check Data\", () => {",
+							"    var json = pm.response.json()[0]",
+							"    pm.expect(json.id).to.eql(parseInt(pm.environment.get(\"order_id\")))",
+							"    pm.expect(json.account.id).to.eql(parseInt(pm.environment.get(\"account_id\")))",
+							"    pm.expect(json.shippingAddress.id).to.eql(parseInt(pm.environment.get(\"address_id\")))",
+							"})"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "localhost:8080/accounts/{{account_id}}/orders",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"accounts",
+						"{{account_id}}",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Order Details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "17661761-afc4-44ef-97f4-750e90378f5f",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Check Status\", () => {",
+							"    pm.response.to.have.status(200)",
+							"})",
+							"",
+							"pm.test(\"Check Values\", () => {",
+							"    var json = pm.response.json()",
+							"    pm.expect(json.orderNumber).to.eql(pm.environment.get(\"order_number\"))",
+							"    pm.expect(json.shippingAddress.id).to.eql(parseInt(pm.environment.get(\"address_id\")))",
+							"    pm.expect(json.shipment[0].id).to.eql(parseInt(pm.environment.get(\"shipment_id\")))",
+							"    pm.expect(json.shipment[1].id).to.eql(parseInt(pm.environment.get(\"shipment_id_2\")))",
+							"})"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "localhost:8080/accounts/{{account_id}}/orders/{{order_number}}",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"accounts",
+						"{{account_id}}",
+						"orders",
+						"{{order_number}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Shipments",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "949ba029-bfed-455d-b2f6-c5dbe8d5a3a5",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Check Status\", () => {",
+							"    pm.response.to.have.status(200)",
+							"})",
+							"",
+							"pm.test(\"Check ID Values\", () => {",
+							"    var json = pm.response.json()",
+							"    pm.expect(json[0].id).to.eql(parseInt(pm.environment.get(\"shipment_id\")))",
+							"    pm.expect(json[1].id).to.eql(parseInt(pm.environment.get(\"shipment_id_2\")))",
+							"})"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "localhost:8080/accounts/{{account_id}}/shipments",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"accounts",
+						"{{account_id}}",
+						"shipments"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
