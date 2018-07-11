@@ -69,15 +69,20 @@ public class AccountService {
   public OrderDetails getOrderDetails(Long id, String orderNumber) {
     Order order = orderRepository.findByOrderNumber(orderNumber);
     Iterable<OrderLineItem> items = lineItemRepository.getAllByShipmentIdOrOrderId(null, order.getId());
-    OrderLineItem item = items.iterator().next();
-    Shipment shipment = item.getShipment();
     OrderDetails details = new OrderDetails();
 
     details.setItems(items);
     details.setOrderNumber(order.getOrderNumber());
-    details.setShippingAddress(shipment.getShippingAddress());
+    details.setShippingAddress(order.getShippingAddress());
     ArrayList<Shipment> shipmentList = new ArrayList<>();
-    items.forEach(i -> shipmentList.add(shipmentRepository.findById(i.getShipment().getId()).get()));
+    items.forEach(i -> {
+      if (shipmentRepository.findById(i.getShipment().getId()).isPresent()) {
+        shipmentList.add(shipmentRepository.findById(i.getShipment().getId()).get());
+      } else {
+        throw new NoSuchElementException("Cannot Compile Order Details. Shipment with ID: " +
+            i.getShipment().getId() + " cannot be found.");
+      }
+    });
     details.setShipment(shipmentList);
     details.genTotalOrderPrice();
 
