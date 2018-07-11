@@ -75,6 +75,7 @@ public class AccountService {
     details.setOrderNumber(order.getOrderNumber());
     details.setShippingAddress(order.getShippingAddress());
     ArrayList<Shipment> shipmentList = new ArrayList<>();
+
     items.forEach(i -> {
       if (shipmentRepository.findById(i.getShipment().getId()).isPresent()) {
         shipmentList.add(shipmentRepository.findById(i.getShipment().getId()).get());
@@ -83,6 +84,7 @@ public class AccountService {
             i.getShipment().getId() + " cannot be found.");
       }
     });
+
     details.setShipment(shipmentList);
     details.genTotalOrderPrice();
 

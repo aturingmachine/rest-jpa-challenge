@@ -22,8 +22,4 @@ public class OrderDetails {
   public void genTotalOrderPrice() {
     this.items.forEach(item -> this.totalPrice += item.getTotalPrice());
   }
-
-  public void addToShipments(Shipment shipment) {
-    this.shipment.add(shipment);
-  }
 }
