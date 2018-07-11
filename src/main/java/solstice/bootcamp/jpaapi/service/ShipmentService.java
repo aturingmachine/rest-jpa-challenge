@@ -8,6 +8,8 @@ import solstice.bootcamp.jpaapi.repository.AccountRepository;
 import solstice.bootcamp.jpaapi.repository.AddressRepository;
 import solstice.bootcamp.jpaapi.repository.ShipmentRepository;
 
+import java.util.NoSuchElementException;
+
 @Service
 public class ShipmentService {
 
@@ -26,7 +28,11 @@ public class ShipmentService {
   }
 
   public Shipment getOne(Long id) {
-    return shipmentRepository.findById(id).get();
+    if (shipmentRepository.findById(id).isPresent()) {
+      return shipmentRepository.findById(id).get();
+    } else {
+      throw new NoSuchElementException("Shipment with ID: " + id + " not found");
+    }
   }
 
   public Shipment create(Long accountId, Long addressId, Shipment shipment) {
@@ -43,5 +49,13 @@ public class ShipmentService {
     shipmentToUpdate.setDeliveredDate(shipment.getDeliveredDate());
 
     return shipmentRepository.save(shipmentToUpdate);
+  }
+
+  public void delete(Long id) {
+    if (shipmentRepository.findById(id).isPresent()) {
+      shipmentRepository.deleteById(id);
+    } else {
+      throw new NoSuchElementException("Shipment with ID: " + id + " not found");
+    }
   }
 }

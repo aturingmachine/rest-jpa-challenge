@@ -11,15 +11,22 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "b6beab91-37dd-4c00-8b8e-2441ece5be84",
+						"id": "b64ca34e-c0a5-4e56-b2a2-83099e73351d",
 						"type": "text/javascript",
 						"exec": [
 							"//Sets the Account ID for testing purposes",
-							"var jsonData = JSON.parse(responseBody);",
+							"var jsonData = pm.response.json()",
 							"pm.environment.set(\"account_id\", jsonData.id);",
 							"",
 							"pm.test(\"201 Status\", function() {",
 							"    pm.response.to.have.status(201)",
+							"})",
+							"",
+							"pm.test(\"Check Return Object\", () => {",
+							"    var json =   pm.response.json()",
+							"    pm.expect(json.firstName).to.eql(\"Post\")",
+							"    pm.expect(json.lastName).to.eql(\"Test\")",
+							"    pm.expect(json.emailAddress).to.eql(\"Post@test.com\")",
 							"})"
 						]
 					}
@@ -56,7 +63,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "808bc828-d4f0-48e4-9243-6bd94dd7fba4",
+						"id": "3152efc2-f63e-4362-975d-185502823ab7",
 						"type": "text/javascript",
 						"exec": [
 							"var json = JSON.parse(responseBody)",
@@ -64,6 +71,17 @@
 							"",
 							"pm.test(\"201 Status\", function() {",
 							"    pm.response.to.have.status(201)",
+							"})",
+							"",
+							"pm.test(\"Check Object Values\", () => {",
+							"    var json = pm.response.json()",
+							"    pm.expect(json.street).to.eql(\"test lane\")",
+							"    pm.expect(json.building).to.eql(\"123\")",
+							"    pm.expect(json.city).to.eql(\"TestTown\")",
+							"    pm.expect(json.state).to.eql(\"TEST\")",
+							"    pm.expect(json.zip).to.eql(\"12345\")",
+							"    pm.expect(json.country).to.eql(\"Testistan\")",
+							"    pm.expect(json.account.id).to.eql(parseInt(pm.environment.get(\"account_id\")))",
 							"})"
 						]
 					}
@@ -519,11 +537,18 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "648062c8-c19f-4abd-861d-46f7e0ed4508",
+						"id": "60e9d4da-1840-4e90-83e0-3feeff8041ec",
 						"type": "text/javascript",
 						"exec": [
 							"pm.test(\"200 Status\", function() {",
 							"    pm.response.to.have.status(200)",
+							"})",
+							"",
+							"pm.test(\"Check Updated Values\", () => {",
+							"    var json = pm.response.json()",
+							"    pm.expect(json.firstName).to.eql(\"Put\")",
+							"    pm.expect(json.lastName).to.eql(\"Test\")",
+							"    pm.expect(json.emailAddress).to.eql(\"Put@test.com\")",
 							"})"
 						]
 					}
@@ -596,11 +621,22 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "2e8810d6-5358-441b-b54c-4ab983129993",
+						"id": "4aff0eaf-ddbe-4a9e-b0c3-3c374620c881",
 						"type": "text/javascript",
 						"exec": [
 							"pm.test(\"200 Status\", function() {",
 							"    pm.response.to.have.status(200)",
+							"})",
+							"",
+							"pm.test(\"Check Values\", () => {",
+							"    var json = pm.response.json()",
+							"    pm.expect(json.street).to.eql(\"test lane\")",
+							"    pm.expect(json.building).to.eql(\"123\")",
+							"    pm.expect(json.city).to.eql(\"TestTown\")",
+							"    pm.expect(json.state).to.eql(\"TEST\")",
+							"    pm.expect(json.zip).to.eql(\"12345\")",
+							"    pm.expect(json.country).to.eql(\"Testistan\")",
+							"    pm.expect(json.account.id).to.eql(parseInt(pm.environment.get(\"account_id\")))",
 							"})"
 						]
 					}
@@ -611,14 +647,12 @@
 				"header": [],
 				"body": {},
 				"url": {
-					"raw": "localhost:8080/accounts/{{account_id}}/addresses/{{address_id}}",
+					"raw": "localhost:8080/addresses/{{address_id}}",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"accounts",
-						"{{account_id}}",
 						"addresses",
 						"{{address_id}}"
 					]
@@ -632,7 +666,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "d8972728-8254-4d25-ad89-641965078fda",
+						"id": "6a79a184-b1a7-4caf-92c0-d45e3d992f8f",
 						"type": "text/javascript",
 						"exec": [
 							"pm.test(\"200 Status\", function() {",
@@ -642,10 +676,7 @@
 							"pm.test(\"Check ID\", () => {",
 							"    var json = pm.response.json()",
 							"    pm.expect(json.id).to.eql(parseInt(pm.environment.get(\"address_id\")))",
-							"})",
-							"",
-							"var json = JSON.parse(responseBody)",
-							"postman.setEnvironmentVariable(\"address_id\", json.id)"
+							"})"
 						]
 					}
 				}
@@ -663,14 +694,12 @@
 					"raw": "{\n\t\"street\": \"update lane\",\n\t\"building\": \"456\",\n\t\"city\": \"UpdateTown\",\n\t\"state\": \"Update\",\n\t\"zip\": \"12345\",\n\t\"country\": \"Updateistan\"\n}"
 				},
 				"url": {
-					"raw": "localhost:8080/accounts/{{account_id}}/addresses/{{address_id}}",
+					"raw": "localhost:8080/addresses/{{address_id}}",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"accounts",
-						"{{account_id}}",
 						"addresses",
 						"{{address_id}}"
 					]
@@ -884,16 +913,12 @@
 				"header": [],
 				"body": {},
 				"url": {
-					"raw": "localhost:8080/accounts/{{account_id}}/addresses/{{address_id}}/shipments/{{shipment_id}}",
+					"raw": "localhost:8080/shipments/{{shipment_id}}",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"accounts",
-						"{{account_id}}",
-						"addresses",
-						"{{address_id}}",
 						"shipments",
 						"{{shipment_id}}"
 					]
@@ -937,16 +962,12 @@
 					"raw": "{\n\t\"shippedDate\": \"2018-07-11\",\n\t\"deliveredDate\": \"2018-07-12\"\n}"
 				},
 				"url": {
-					"raw": "localhost:8080/accounts/{{account_id}}/addresses/{{address_id}}/shipments/{{shipment_id}}",
+					"raw": "localhost:8080/shipments/{{shipment_id}}",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"accounts",
-						"{{account_id}}",
-						"addresses",
-						"{{address_id}}",
 						"shipments",
 						"{{shipment_id}}"
 					]
@@ -1253,6 +1274,215 @@
 						"accounts",
 						"{{account_id}}",
 						"shipments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Test Bad Request Error",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "42a25557-fa8f-4f1a-9e5e-66023bcfbf87",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Check Error Status\", () => {",
+							"    pm.response.to.have.status(400)",
+							"})",
+							"",
+							"pm.test(\"Check Error Message\", () => {",
+							"    var json = pm.response.json()",
+							"    pm.expect(json.message).to.eql(\"Malformed JSON request\")",
+							"})"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"firstname: 1,\n\t\"lastName\": \"Test\",\n\t\"emailAddress\": \"Post@test.com\"\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/accounts/",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"accounts",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Test Conflict Error",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6fef5898-5469-4b73-b715-a96ab169b1a4",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Check Error Code\", () => {",
+							"    pm.response.to.have.status(409)",
+							"})",
+							"",
+							"pm.test(\"Check Error Code\", () => {",
+							"    var json = pm.response.json()",
+							"    pm.expect(json.message).to.eql(\"Violation Of Unique Constraint: Duplicate entry '12345\")",
+							"})"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"orderNumber\": \"12345\",\n\t\"orderDate\": \"2018-07-10\"\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/accounts/{{account_id}}/addresses/{{address_id}}/orders",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"accounts",
+						"{{account_id}}",
+						"addresses",
+						"{{address_id}}",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Test Not Found Error",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b1ba3b5f-7f52-4a2f-b62d-6566821b89b3",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Check Response Status\", () => {",
+							"    pm.response.to.have.status(404)",
+							"})",
+							"",
+							"pm.test(\"Check Error Message\", () => {",
+							"    var json = pm.response.json()",
+							"    pm.expect(json.message).to.eql(\"Resource Not Found\")",
+							"})",
+							"",
+							"pm.test(\"Check Debug Message\", () => {",
+							"    var json = pm.response.json()",
+							"    pm.expect(json.debugMessage).to.eql(\"Address with ID: 100 not found\")",
+							"})"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "localhost:8080/addresses/100",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"addresses",
+						"100"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Account",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "9ef7490f-e508-468c-a209-be4a80ba2975",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Check Response Status\", () => {",
+							"    pm.response.to.have.status(204)",
+							"})"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "localhost:8080/accounts/{{account_id}}",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"accounts",
+						"{{account_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Address",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8f7713ba-d851-45f4-9153-ad20439c7684",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Check Response Status\", () => {",
+							"    pm.response.to.have.status(204)",
+							"})"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "localhost:8080/addresses/{{address_id}}",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"addresses",
+						"{{address_id}}"
 					]
 				}
 			},

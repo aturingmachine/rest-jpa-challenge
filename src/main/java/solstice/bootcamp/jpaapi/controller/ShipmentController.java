@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import solstice.bootcamp.jpaapi.model.Shipment;
 import solstice.bootcamp.jpaapi.service.ShipmentService;
 
-@RequestMapping("/accounts/{accountId}/addresses/{addressId}/shipments")
+@RequestMapping("")
 @RestController
 public class ShipmentController {
 
@@ -16,19 +16,19 @@ public class ShipmentController {
     this.shipmentService = shipmentService;
   }
 
-  @GetMapping("")
+  @GetMapping("/accounts/{accountId}/addresses/{addressId}/shipments")
   public Iterable<Shipment> getAll(@PathVariable("accountId") Long accountId,
       @PathVariable("addressId") Long addressId) {
 
     return shipmentService.getAll(accountId, addressId);
   }
 
-  @GetMapping("/{shipmentId}")
+  @GetMapping("/shipments/{shipmentId}")
   public Shipment getOne(@PathVariable("shipmentId") Long id) {
     return shipmentService.getOne(id);
   }
 
-  @PostMapping("")
+  @PostMapping("/accounts/{accountId}/addresses/{addressId}/shipments")
   public ResponseEntity create(@PathVariable("accountId") Long accountId,
       @PathVariable("addressId") Long addressId, @RequestBody Shipment shipment) {
 
@@ -37,9 +37,16 @@ public class ShipmentController {
     return new ResponseEntity<>(newShipment, HttpStatus.CREATED);
   }
 
-  @PutMapping("/{shipmentId}")
+  @PutMapping("/shipments/{shipmentId}")
   public Shipment update(@PathVariable("shipmentId") Long id, @RequestBody Shipment shipment) {
     return shipmentService.update(id, shipment);
+  }
+
+  @DeleteMapping("/shipments/{shipmentId}")
+  public ResponseEntity delete(@PathVariable("shipmentId") Long id) {
+    shipmentService.delete(id);
+
+    return new ResponseEntity(HttpStatus.NO_CONTENT);
   }
 
 }

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import solstice.bootcamp.jpaapi.model.Order;
 import solstice.bootcamp.jpaapi.service.OrderService;
 
-@RequestMapping("/accounts/{id}/addresses/{addressId}/orders")
+@RequestMapping("")
 @RestController
 public class OrderController {
 
@@ -16,19 +16,19 @@ public class OrderController {
     this.orderService = orderService;
   }
 
-  @GetMapping("")
+  @GetMapping("/accounts/{id}/addresses/{addressId}/orders")
   public Iterable<Order> getAll(@PathVariable("id") Long id,
       @PathVariable("addressId") Long addressId) {
 
     return orderService.getAll(id, addressId);
   }
 
-  @GetMapping("/{orderId}")
+  @GetMapping("/orders/{orderId}")
   public Order getOne(@PathVariable("orderId") Long orderId) {
     return orderService.getOne(orderId);
   }
 
-  @PostMapping("")
+  @PostMapping("/accounts/{id}/addresses/{addressId}/orders")
   public ResponseEntity create(@PathVariable("id") Long id, @PathVariable("addressId") Long addressId,
       @RequestBody Order order) {
 
@@ -37,14 +37,15 @@ public class OrderController {
     return new ResponseEntity<>(newOrder, HttpStatus.CREATED);
   }
 
-  @DeleteMapping("/{orderId}")
+  @DeleteMapping("/orders/{orderId}")
   public ResponseEntity delete(@PathVariable("orderId") Long id) {
+
     orderService.delete(id);
 
     return new ResponseEntity(HttpStatus.NO_CONTENT);
   }
 
-  @PutMapping("/{orderId}")
+  @PutMapping("/accounts/{id}/addresses/{addressId}/orders/{orderId}")
   public Order update(@PathVariable("accountId") Long accountId,
       @PathVariable("addressId") Long addressId, @PathVariable("orderId") Long orderId,
       @RequestBody Order order) {

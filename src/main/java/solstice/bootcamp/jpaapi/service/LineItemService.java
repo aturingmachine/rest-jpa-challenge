@@ -7,6 +7,7 @@ import solstice.bootcamp.jpaapi.model.Product;
 import solstice.bootcamp.jpaapi.model.Shipment;
 import solstice.bootcamp.jpaapi.repository.*;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -34,7 +35,7 @@ public class LineItemService {
     if (orderLineItemRepository.findById(itemId).isPresent()) {
       return orderLineItemRepository.findById(itemId).get();
     } else {
-      return null;
+      throw new NoSuchElementException("Line Item with ID: " + itemId + " not found");
     }
   }
 
@@ -66,7 +67,12 @@ public class LineItemService {
     return orderLineItemRepository.save(itemToUpdate);
   }
 
-  public void delete(Long itemId) {
-    orderLineItemRepository.deleteById(itemId);
+  public void delete(Long shipmentId, Long orderId, Long itemId) {
+
+    if (orderLineItemRepository.findById(itemId).isPresent()) {
+      orderLineItemRepository.deleteByShipmentIdOrOrderIdAndId(shipmentId, orderId, itemId);
+    } else {
+      throw new NoSuchElementException("Line Item with ID: " + itemId + " not found");
+    }
   }
 }

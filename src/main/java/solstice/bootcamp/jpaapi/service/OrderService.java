@@ -8,6 +8,8 @@ import solstice.bootcamp.jpaapi.repository.AccountRepository;
 import solstice.bootcamp.jpaapi.repository.AddressRepository;
 import solstice.bootcamp.jpaapi.repository.OrderRepository;
 
+import java.util.NoSuchElementException;
+
 @Service
 public class OrderService {
 
@@ -38,11 +40,19 @@ public class OrderService {
   }
 
   public Order getOne(Long orderId) {
-    return orderRepository.findById(orderId).get();
+     if (orderRepository.findById(orderId).isPresent()) {
+       return orderRepository.findById(orderId).get();
+     } else {
+       throw new NoSuchElementException("Order with ID: " + orderId + " not found");
+     }
   }
 
   public void delete(Long id) {
-    orderRepository.deleteById(id);
+    if (orderRepository.findById(id).isPresent()) {
+      orderRepository.deleteById(id);
+    } else {
+      throw new NoSuchElementException("Order with ID: " + id + " not found");
+    }
   }
 
   public Order update(Long accountId, Long addressId, Long orderId, Order order) {

@@ -9,6 +9,7 @@ import solstice.bootcamp.jpaapi.repository.ShipmentRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 @Service
@@ -37,11 +38,19 @@ public class AccountService {
   }
 
   public Account getOne(Long id) {
-    return accountRepository.findById(id).get();
+    if (accountRepository.findById(id).isPresent()) {
+      return accountRepository.findById(id).get();
+    } else {
+      throw new NoSuchElementException("Account with ID: " + id + " not found");
+    }
   }
 
   public void delete(Long id) {
-    accountRepository.deleteById(id);
+    if (accountRepository.findById(id).isPresent()) {
+      accountRepository.deleteById(id);
+    } else {
+      throw new NoSuchElementException("Account with ID: " + id + " not found");
+    }
   }
 
   public Account update(Long id, Account account) {

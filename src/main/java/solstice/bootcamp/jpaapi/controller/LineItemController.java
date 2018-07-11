@@ -47,8 +47,9 @@ public class LineItemController {
   }
 
   @DeleteMapping("/{itemId}")
-  public ResponseEntity delete(@PathVariable("itemId") Long id) {
-    lineItemService.delete(id);
+  public ResponseEntity delete(@PathVariable("shipmentId") Long shipmentId,
+      @PathVariable("orderId") Long orderId, @PathVariable("itemId") Long id) {
+    lineItemService.delete(shipmentId, orderId, id);
 
     return new ResponseEntity(HttpStatus.NO_CONTENT);
   }

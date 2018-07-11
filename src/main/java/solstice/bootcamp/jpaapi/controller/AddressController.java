@@ -10,7 +10,7 @@ import solstice.bootcamp.jpaapi.service.AddressService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/accounts/{id}/addresses")
+@RequestMapping("")
 public class AddressController {
 
   private AddressService addressService;
@@ -19,29 +19,29 @@ public class AddressController {
     this.addressService = addressService;
   }
 
-  @PostMapping("")
+  @PostMapping("/accounts/{id}/addresses")
   public ResponseEntity create(@PathVariable("id") Long id, @RequestBody Address address) {
     return new ResponseEntity<>(addressService.save(address, id), HttpStatus.CREATED);
   }
 
-  @GetMapping("")
+  @GetMapping("/accounts/{id}/addresses")
   public List<Address> getAll(@PathVariable("id") Long id) {
     return addressService.getAll(id);
   }
 
-  @GetMapping("/{addressId}")
-  public Address getOne(@PathVariable("id") Long id, @PathVariable("addressId") Long addressId) {
+  @GetMapping("/addresses/{addressId}")
+  public Address getOne(@PathVariable("addressId") Long addressId) {
     return addressService.getOne(addressId);
   }
 
-  @PutMapping("/{addressId}")
+  @PutMapping("/addresses/{addressId}")
   public Address getOne(@PathVariable("addressId") Long addressId, @RequestBody Address address) {
     return addressService.update(addressId, address);
   }
 
-  @DeleteMapping("/{addressId}")
-  public ResponseEntity delete(@PathVariable("addressId") Long id) {
-    addressService.delete(id);
+  @DeleteMapping("/addresses/{addressId}")
+  public ResponseEntity delete(@PathVariable("addressId") Long addressId) {
+    addressService.delete(addressId);
 
     return new ResponseEntity(HttpStatus.NO_CONTENT);
   }

@@ -7,6 +7,8 @@ import solstice.bootcamp.jpaapi.repository.AccountRepository;
 import solstice.bootcamp.jpaapi.repository.AddressRepository;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class AddressService {
@@ -32,7 +34,13 @@ public class AddressService {
   }
 
   public Address getOne(Long id) {
-    return addressRepository.findById(id).get();
+    Optional add = addressRepository.findById(id);
+
+    if (add.isPresent()) {
+      return (Address) add.get();
+    } else {
+      throw new NoSuchElementException("Address with ID: " + id + " not found");
+    }
   }
 
   public Address update(Long id, Address address) {
@@ -47,7 +55,11 @@ public class AddressService {
     return addressRepository.save(addressToUpdate);
   }
 
-  public void delete(Long id) {
-    addressRepository.deleteById(id);
+  public void delete(Long addressId) {
+    if (addressRepository.findById(addressId).isPresent()) {
+      addressRepository.deleteById(addressId);
+    } else {
+      throw new NoSuchElementException("Address with ID: " + addressId + " not found");
+    }
   }
 }

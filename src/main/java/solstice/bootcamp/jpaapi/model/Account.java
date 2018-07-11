@@ -1,6 +1,5 @@
 package solstice.bootcamp.jpaapi.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,6 +11,9 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
+@Table(uniqueConstraints = {
+    @UniqueConstraint(name = "emailAddress", columnNames = "emailAddress")
+})
 public class Account {
 
   @Id

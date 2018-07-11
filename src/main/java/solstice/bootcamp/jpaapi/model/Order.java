@@ -9,7 +9,9 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name = "orders")
+@Table(name = "orders", uniqueConstraints = {
+    @UniqueConstraint(name = "order_number", columnNames = "orderNumber")
+})
 @Getter
 @Setter
 @NoArgsConstructor
