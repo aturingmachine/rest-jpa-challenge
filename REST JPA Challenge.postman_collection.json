@@ -1244,7 +1244,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "949ba029-bfed-455d-b2f6-c5dbe8d5a3a5",
+						"id": "7fef8842-4b4d-490c-ace8-84381aeb067a",
 						"type": "text/javascript",
 						"exec": [
 							"pm.test(\"Check Status\", () => {",
@@ -1253,8 +1253,8 @@
 							"",
 							"pm.test(\"Check ID Values\", () => {",
 							"    var json = pm.response.json()",
-							"    pm.expect(json[0].id).to.eql(parseInt(pm.environment.get(\"shipment_id\")))",
-							"    pm.expect(json[1].id).to.eql(parseInt(pm.environment.get(\"shipment_id_2\")))",
+							"    pm.expect(json[0].id).to.eql(parseInt(pm.environment.get(\"shipment_id_2\")))",
+							"    pm.expect(json[1].id).to.eql(parseInt(pm.environment.get(\"shipment_id\")))",
 							"})"
 						]
 					}

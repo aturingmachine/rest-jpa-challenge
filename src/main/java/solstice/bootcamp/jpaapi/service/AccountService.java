@@ -85,6 +85,6 @@ public class AccountService {
   }
 
   public Iterable<Shipment> getAllShipments(Long id) {
-    return shipmentRepository.getAllByAccountId(id);
+    return shipmentRepository.getAllByAccountIdOrderByDeliveredDate(id);
   }
 }
